@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{f05da174-0a9a-4a04-9333-9f269574c2f8}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T12:02:27</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation bgcolor="4280839393" id="{fdb933a7-fb1f-489f-8158-8467405127c3}" label="For Loop" plugin="www.csiro.au/workspace/builtin" type="ForLoop">
+    <input name="Dependencies" size="0"/>
+    <input name="Enable loop">1</input>
+    <input name="Wrap">0</input>
+    <input name="Enable parallel looping">0</input>
+    <input name="Counter value">10</input>
+    <input name="First iteration?" nodata="true"/>
+    <input name="Start value">1</input>
+    <input name="End value">10</input>
+    <input name="Step value">1</input>
+    <pos x="-340" y="-90"/>
+    <view height="198" x="-400.3" y="-235.5"/>
+    <operation bgcolor="4278242304" dataname="Counter value" dataplugin="www.csiro.au/workspace/builtin" datatype="int" id="{106ad008-c6f3-4db9-a824-39c7ef751b4b}" label="Counter value" plugin="www.csiro.au/workspace/builtin" type="WorkspaceInput">
+      <input name="Dependencies" size="0"/>
+      <view height="91" x="-572.75" y="-74.05"/>
+      <pos x="-550" y="10"/>
+    </operation>
+    <operation bgcolor="4278242304" dataname="First iteration?" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{1111b37e-c56e-4bfd-9357-5ecc70eb312b}" label="First iteration?" plugin="www.csiro.au/workspace/builtin" type="WorkspaceInput">
+      <input name="Dependencies" size="0"/>
+      <pos x="-550" y="-140"/>
+      <view height="91" x="-572.75" y="-224.05"/>
+    </operation>
+    <operation bgcolor="4294901760" id="{3746ff79-e3dc-496b-8022-34e690dd7250}" label="Pause" plugin="www.csiro.au/workspace/builtin" type="Pause">
+      <input name="Dependencies" size="1"/>
+      <input name="Milliseconds">1000</input>
+      <input name="Since last execute">0</input>
+      <view height="155" x="-200.25" y="-76.25"/>
+      <pos x="-150" y="40"/>
+    </operation>
+    <operation bgcolor="4284395451" id="{42361a67-08cb-4d19-8b21-d83537c15792}" label="Log Text" plugin="www.csiro.au/workspace/builtin" type="LogText">
+      <input name="Dependencies" size="0"/>
+      <input name="Strings" size="0"/>
+      <input name="Category"/>
+      <view height="155" x="-400.25" y="-76.25"/>
+      <pos x="-350" y="40"/>
+    </operation>
+    <operation bgcolor="4294931456" dataname="Dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{dcb07c8c-91f7-4734-8dd1-34dccf8db0fb}" label="Dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+      <input name="Dependencies" size="1"/>
+      <input name="Dependency" nodata="true"/>
+      <view height="91" x="7.25" y="-74.05"/>
+      <pos x="30" y="10"/>
+    </operation>
+    <connection copy="false" dest_name="Text to Log" from_op="{106ad008-c6f3-4db9-a824-39c7ef751b4b}" src_name="Counter value" to_op="{42361a67-08cb-4d19-8b21-d83537c15792}">
+      <adaptor align="1" pad=" " sign="false" width="0"/>
+    </connection>
+    <connection copy="false" dest_index="0" dest_name="Dependencies" from_op="{3746ff79-e3dc-496b-8022-34e690dd7250}" src_name="Dependencies" to_op="{dcb07c8c-91f7-4734-8dd1-34dccf8db0fb}"/>
+    <connection copy="false" dest_index="0" dest_name="Dependencies" from_op="{42361a67-08cb-4d19-8b21-d83537c15792}" src_name="Dependencies" to_op="{3746ff79-e3dc-496b-8022-34e690dd7250}"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="For Loop dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{fecdf021-8508-4dd5-8456-915bb701719c}" label="For Loop dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-132.75" y="-174.05"/>
+    <pos x="-110" y="-90"/>
+  </operation>
+  <connection copy="false" dest_name="For Loop dependency" from_op="{fdb933a7-fb1f-489f-8158-8467405127c3}" src_name="Dependencies" to_op="{fecdf021-8508-4dd5-8456-915bb701719c}"/>
+</operation>

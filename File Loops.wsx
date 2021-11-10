@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{6d291356-9830-437d-ba61-a5d9639b9858}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T12:24:24</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation bgcolor="4280839393" id="{4d31dea8-81c8-4132-899a-60f6391e4b5d}" label="File Loop" plugin="www.csiro.au/workspace/builtin" type="FileLoop">
+    <input name="Dependencies" size="0"/>
+    <input name="Enable loop">1</input>
+    <input name="Wrap">0</input>
+    <input name="Enable parallel looping">0</input>
+    <input name="Current file name">C:/Program Files/csiro.au/workspace/doc/Workspace/Examples/SimpleApplication/CalculateArea/Widgets/mainwindow.ui</input>
+    <input name="First iteration?" nodata="true"/>
+    <input name="Directory" preferredwidget="CSIRO::Widgets::DirectoryWidget">C:/Program Files/csiro.au/workspace/doc/Workspace/Examples</input>
+    <input name="File patterns" size="1">
+      <input index="0">*</input>
+    </input>
+    <input name="Output format">1</input>
+    <input name="Directory Iterator Flags">
+      <Subdirectories>1</Subdirectories>
+      <Follow_symbolic_links>0</Follow_symbolic_links>
+    </input>
+    <input name="Filter">
+      <Directories>1</Directories>
+      <All_directories>0</All_directories>
+      <Files>1</Files>
+      <Drives>0</Drives>
+      <No_symbolic_links>0</No_symbolic_links>
+      <No_dot____>1</No_dot____>
+      <No_dot_dot_____>1</No_dot_dot_____>
+      <Readable>1</Readable>
+      <Writable>1</Writable>
+      <Executable>1</Executable>
+      <Modified>0</Modified>
+      <Hidden>0</Hidden>
+      <System>0</System>
+      <Case_sensitive>1</Case_sensitive>
+    </input>
+    <input name="Sorting">
+      <Name>1</Name>
+      <Time>0</Time>
+      <Size>0</Size>
+      <Type>0</Type>
+      <Unsorted>0</Unsorted>
+      <Dirs_first>0</Dirs_first>
+      <Dirs_last>0</Dirs_last>
+      <Reversed>0</Reversed>
+      <Ignore_case>0</Ignore_case>
+      <Natural_sort>0</Natural_sort>
+    </input>
+    <pos x="-390" y="70"/>
+    <view height="284" x="-450.3" y="-118.5"/>
+    <operation bgcolor="4278242304" dataname="Current file name" dataplugin="www.csiro.au/workspace/builtin" datatype="QString" id="{03fe9bc1-0db8-47e3-b8ad-3b96bc1995dc}" label="Current file name" plugin="www.csiro.au/workspace/builtin" type="WorkspaceInput">
+      <input name="Dependencies" size="0"/>
+      <view height="91" width="177" x="-322.75" y="-64.05"/>
+      <pos x="-300" y="20"/>
+    </operation>
+    <operation bgcolor="4278242304" dataname="First iteration?" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{0dabfc2c-1958-4361-83ba-b893183a7c67}" label="First iteration?" plugin="www.csiro.au/workspace/builtin" type="WorkspaceInput">
+      <input name="Dependencies" size="0"/>
+      <pos x="-290" y="-90"/>
+      <view height="91" x="-312.75" y="-174.05"/>
+    </operation>
+    <operation bgcolor="4284395451" id="{98c7531b-7d72-4297-becf-c55c89766437}" label="Log Text" plugin="www.csiro.au/workspace/builtin" type="LogText">
+      <input name="Dependencies" size="0"/>
+      <input name="Strings" size="0"/>
+      <input name="Category"/>
+      <view height="155" x="-50.25" y="-96.25"/>
+      <pos x="0" y="20"/>
+    </operation>
+    <operation bgcolor="4294931456" dataname="Dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{b7b297ce-54a5-4ea2-ac30-78c219979fe1}" label="Dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+      <input name="Dependencies" size="0"/>
+      <view height="91" x="237.25" y="-64.05"/>
+      <pos x="260" y="20"/>
+    </operation>
+    <connection copy="false" dest_name="Text to Log" from_op="{03fe9bc1-0db8-47e3-b8ad-3b96bc1995dc}" src_name="Current file name" to_op="{98c7531b-7d72-4297-becf-c55c89766437}"/>
+    <connection copy="false" dest_name="Dependency" from_op="{98c7531b-7d72-4297-becf-c55c89766437}" src_name="Dependencies" to_op="{b7b297ce-54a5-4ea2-ac30-78c219979fe1}"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="File Loop dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{cecc9e79-be7a-4580-8beb-3342fabd338b}" label="File Loop dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-182.75" y="-14.05"/>
+    <pos x="-160" y="70"/>
+  </operation>
+  <connection copy="false" dest_name="File Loop dependency" from_op="{4d31dea8-81c8-4132-899a-60f6391e4b5d}" src_name="Dependencies" to_op="{cecc9e79-be7a-4580-8beb-3342fabd338b}"/>
+</operation>

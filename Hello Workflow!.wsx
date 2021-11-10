@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{b83e17a5-43aa-4983-b162-db774d4d5fc6}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-08T17:37:17</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation bgcolor="4284395451" id="{d768917a-1f4d-4d70-b956-7ee4fa65fd7e}" label="Concatenate strings" plugin="www.csiro.au/workspace/builtin" type="ConcatenateStrings">
+    <input name="Dependencies" size="0"/>
+    <input name="Strings" size="2">
+      <input index="0">Updated&amp;#160;</input>
+      <input index="1">Workspace!</input>
+    </input>
+    <input name="Accumulate across iterations">0</input>
+    <input name="Reset accumulation" nodata="true"/>
+    <view height="155" x="-70.25" y="-196.25"/>
+    <pos x="-20" y="-80"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{ee577091-e449-442e-89d8-48d3a5164d51}" label="Log Text" plugin="www.csiro.au/workspace/builtin" type="LogText">
+    <input name="Dependencies" size="0"/>
+    <input name="Text to Log"/>
+    <input name="Strings" size="1"/>
+    <input name="Category"/>
+    <view height="155" x="269.75" y="-196.25"/>
+    <pos x="320" y="-80"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Log Text dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{22a12994-522a-445d-a95e-54346d8da2cb}" label="Log Text dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="527.25" y="-164.05"/>
+    <pos x="550" y="-80"/>
+  </operation>
+  <connection copy="false" dest_index="0" dest_name="Strings" from_op="{d768917a-1f4d-4d70-b956-7ee4fa65fd7e}" src_name="Concatenated String" to_op="{ee577091-e449-442e-89d8-48d3a5164d51}"/>
+  <connection copy="false" dest_name="Log Text dependency" from_op="{ee577091-e449-442e-89d8-48d3a5164d51}" src_name="Dependencies" to_op="{22a12994-522a-445d-a95e-54346d8da2cb}"/>
+</operation>

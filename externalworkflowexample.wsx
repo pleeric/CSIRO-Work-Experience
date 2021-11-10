@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{a075e432-0ca6-4127-85c3-efd711e01f90}" label="Log with timestamp" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T16:04:57</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <input name="Input" nodata="true"/>
+  <pos x="-499.9999999999999" y="-60"/>
+  <operation bgcolor="4278242304" dataname="Input" dataplugin="www.csiro.au/workspace/builtin" datatype="QString" id="{2f7846fb-a38b-46d2-9fa7-8506239417fa}" label="Input" plugin="www.csiro.au/workspace/builtin" type="WorkspaceInput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-492.75" y="-44.05"/>
+    <pos x="-470" y="40"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{1648aa28-581e-446b-bc13-1f130b2845d5}" label="Log Text" plugin="www.csiro.au/workspace/builtin" type="LogText">
+    <input name="Dependencies" size="0"/>
+    <input name="Strings" size="0"/>
+    <input name="Category"/>
+    <view height="155" x="-70.25" y="-206.25"/>
+    <pos x="-20" y="-90"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{39b3f4ef-8ca6-4cb7-890a-b4c41b977a26}" label="Concatenate strings" plugin="www.csiro.au/workspace/builtin" type="ConcatenateStrings">
+    <input name="Dependencies" size="0"/>
+    <input name="Strings" size="2"/>
+    <input name="Accumulate across iterations">0</input>
+    <input name="Reset accumulation" nodata="true"/>
+    <view height="155" x="-220.25" y="-206.25"/>
+    <pos x="-170" y="-90"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{fcf23222-9881-44cc-95f8-a79c10618272}" label="Get current time" plugin="www.csiro.au/workspace/builtin" type="GetCurrentTime">
+    <input name="Dependencies" size="0"/>
+    <input name="Format">yyyy-MM-dd hh:mm:ss&amp;#160;</input>
+    <view height="155" x="-490.25" y="-266.25"/>
+    <pos x="-440" y="-150"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Log Text dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{d0af5b40-754b-4e25-8496-fcd91e1e6f98}" label="Log Text dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="117.25" y="-174.05"/>
+    <pos x="140" y="-90"/>
+  </operation>
+  <connection copy="false" dest_name="Log Text dependency" from_op="{1648aa28-581e-446b-bc13-1f130b2845d5}" src_name="Dependencies" to_op="{d0af5b40-754b-4e25-8496-fcd91e1e6f98}"/>
+  <connection copy="false" dest_index="1" dest_name="Strings" from_op="{2f7846fb-a38b-46d2-9fa7-8506239417fa}" src_name="Input" to_op="{39b3f4ef-8ca6-4cb7-890a-b4c41b977a26}"/>
+  <connection copy="false" dest_name="Text to Log" from_op="{39b3f4ef-8ca6-4cb7-890a-b4c41b977a26}" src_name="Concatenated String" to_op="{1648aa28-581e-446b-bc13-1f130b2845d5}"/>
+  <connection copy="false" dest_index="0" dest_name="Strings" from_op="{fcf23222-9881-44cc-95f8-a79c10618272}" src_name="Value (in Date/Time format)" to_op="{39b3f4ef-8ca6-4cb7-890a-b4c41b977a26}"/>
+</operation>

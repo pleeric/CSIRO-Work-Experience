@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{9d021a44-782a-41ad-8ab6-a40b2373fa46}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T14:35:28</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+    <plugin name="www.csiro.au/workspace/dataanalysis" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation bgcolor="4284395451" id="{04a33f4e-d3d5-4486-b35e-93ffe5f26831}" label="Map data series" plugin="www.csiro.au/workspace/dataanalysis" type="MapDataSeries">
+    <input name="Dependencies" size="0"/>
+    <output name="Data series" preferredwidget="CSIRO::DataAnalysis::DataSeriesWidget"/>
+    <view height="155" x="-1020.25" y="-406.25"/>
+    <pos x="-970" y="-290"/>
+  </operation>
+  <operation bgcolor="4284395451" dataname="Column" dataplugin="www.csiro.au/workspace/dataanalysis" datatype="CSIRO::DataAnalysis::DataSeries" id="{1da9d239-f5ec-41ed-8ae9-cc09e4d24859}" label="Get area" plugin="www.csiro.au/workspace/dataanalysis" type="GetSqlResultSetColumn">
+    <input name="Dependencies" size="0"/>
+    <input name="Column name">area</input>
+    <view height="155" x="-1290.25" y="-466.25"/>
+    <pos x="-1240" y="-350"/>
+  </operation>
+  <operation bgcolor="4284395451" dataname="Column" dataplugin="www.csiro.au/workspace/dataanalysis" datatype="CSIRO::DataAnalysis::DataSeries" id="{3d8ca524-3a93-4cac-966f-3734d784e452}" label="Get number" plugin="www.csiro.au/workspace/dataanalysis" type="GetSqlResultSetColumn">
+    <input name="Dependencies" size="0"/>
+    <input name="Column name">number</input>
+    <view height="155" x="-1410.25" y="-256.25"/>
+    <pos x="-1360" y="-140"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{400e0d57-1b94-4131-8faa-a59299fba45c}" label="Query Sql Database" plugin="www.csiro.au/workspace/dataanalysis" type="QuerySqlDatabase">
+    <input name="Dependencies" size="0"/>
+    <input name="Query">SELECT * FROM plotsample</input>
+    <view height="155" x="-1520.25" y="-596.25"/>
+    <pos x="-1470" y="-480"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{57362087-59e8-44c5-b057-a10e74b64e35}" label="Create DataSeries Map from Script" plugin="www.csiro.au/workspace/dataanalysis" type="CreateDataSeriesMapFromScript">
+    <input name="Dependencies" size="0"/>
+    <input name="Function name">mapToValue</input>
+    <input name="Script">cumAvg = 0;
+function mapToValue(index,srcValue)
+{
+   // Make sure we always reset our global variable for the first index
+   if (index === 0)
+   {
+      cumAvg = 0;
+   }
+
+   cumAvg = (srcValue + index * cumAvg) / (index + 1);
+   return cumAvg;
+}</input>
+    <input name="Globals" size="0"/>
+    <view height="155" x="-1140.25" y="-586.25"/>
+    <pos x="-1090" y="-470"/>
+  </operation>
+  <operation ChartType="" bgcolor="4284395451" id="{664ef71a-3776-46f8-b769-5d730c520011}" label="Create chart" plugin="www.csiro.au/workspace/dataanalysis" type="CreateChart">
+    <input name="Dependencies" size="0"/>
+    <input name="Script" preferredwidget="CSIRO::Widgets::JSEditWidget">//  This script generates a line plot using nvd3.js (which builds on d3.js).
+//  You are free to customize as you wish using any nvd3 or d3 functionality.
+//  For more information about these libraries, see the documentation below:
+//
+//  http://nvd3-community.github.io/nvd3/examples/documentation.html
+//  http://nvd3.org/examples/line.html.
+//  http://d3js.org/
+//
+//  All inputs available to your CreateChart operation are available via the
+//  &quot;ws.inputs&quot; variable, and a number of extra utility functions are available
+//  in the &quot;ws&quot; variable.
+
+/**
+ * Generates an array of objects, each of which represents a line on our graph.
+ * Modify this function to source any data you wish from the &quot;inputs&quot; object.
+ */
+ws.createData = function() {
+    // Iterate over each of our items and add it to an array which we will return.
+    var plotItems = [];
+    for (var i = 0; i &lt; ws.inputs.LineItems.length; i++) {
+        // Check to make sure our source dimensions match.
+        var lineItem = ws.inputs.LineItems[i];
+        if (lineItem.XValues.length !== lineItem.YValues.length) {
+            console.log('ERROR: SourceX and SourceY dimensions for line item &quot;' + ws.inputs.LineItems[i].Key + '&quot; do not match.');
+            continue;
+        }
+
+        // Create the data series data.
+        var series = [];
+        for (var j = 0; j &lt; lineItem.XValues.length; j++) {
+            series.push({
+                x: lineItem.XValues[j],
+                y: lineItem.YValues[j]
+            });
+        }
+
+        // Create our plot item.
+        var key = (lineItem.Key === undefined || lineItem.Key.length === 0) ? &quot;Series &quot; + i : lineItem.Key;
+        plotItems.push({
+            area: false,
+            values: series,
+            key: key,
+            strokeWidth: 2.0,
+            classed: lineItem.ClassName
+        });
+    }
+
+    return plotItems;
+};
+
+
+/**
+ * Creates our line plot using the nvd3 lineChart model and sets up the axes.
+ */
+ws.addChart(function() {
+    // This controls the type of chart we're using. See the nvd3 docs for the list of chart types.
+    var chart = nv.models.lineChart();
+    chart.options({
+        duration: 250,
+        useInteractiveGuideline: true,
+        color: d3.scale.category20().range()
+    });
+    chart.legend.margin({ top: 15, bottom: 15 });
+
+    // Set up our scales.
+    chart.xScale(d3.scale.linear());
+    chart.yScale(d3.scale.linear());
+
+    // Set up our chart axes. For information on the formatting used on the x and y axes, see
+    // the d3 documentation here: https://github.com/mbostock/d3/wiki/Formatting
+    chart.xAxis.axisLabel(ws.inputs.XAxisLabel).tickFormat(d3.format(',.1f')).staggerLabels(false);
+    chart.yAxis.axisLabel(ws.inputs.YAxisLabel).tickFormat(d3.format(',.2f'));
+    ws.setTitle(ws.inputs.Title);
+
+    return chart;
+});
+</input>
+    <input name="Style" preferredwidget="CSIRO::Widgets::JSEditWidget">text {
+    font: 12px sans-serif;
+}
+.dashed {
+    stroke-dasharray: 5,5;
+}
+#title {
+    font: 14px sans-serif;
+    font-weight: bold;
+    text-decoration: underline;
+}
+</input>
+    <input name="Title"/>
+    <input name="LineItems" size="1"/>
+    <input name="XAxisLabel"/>
+    <input name="YAxisLabel"/>
+    <output name="Chart" preferredwidget="CSIRO::DataAnalysis::ChartWidget"/>
+    <view height="174" x="-700.25" y="-265.75"/>
+    <pos x="-650" y="-140"/>
+    <custominput datatype="QString" isscalar="true" name="Title"/>
+    <custominput datatype="CSIRO::DataExecution::ObjectDictionary" isscalar="false" name="LineItems"/>
+    <custominput datatype="QString" isscalar="true" name="XAxisLabel"/>
+    <custominput datatype="QString" isscalar="true" name="YAxisLabel"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{95d7f695-5bd1-4e0b-97d5-815e1cb3e9d0}" label="Render Chart to Image" plugin="www.csiro.au/workspace/dataanalysis" type="ChartToImage">
+    <input name="Dependencies" size="0"/>
+    <input globalname="width" name="Width" preferredwidget="QSpinBox">300</input>
+    <input globalname="height" name="Height" preferredwidget="QSpinBox">400</input>
+    <input name="Render timeout (msec)">5000</input>
+    <view height="155" x="-480.25" y="-256.25"/>
+    <pos x="-430" y="-140"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{b2e3db8f-b391-4da8-be6d-7b497a20cc47}" label="Query Sql Database" plugin="www.csiro.au/workspace/dataanalysis" type="QuerySqlDatabase">
+    <input name="Dependencies" size="0"/>
+    <input name="Query">SELECT * FROM plotsample</input>
+    <output name="Result" preferredwidget="CSIRO::DataAnalysis::TableWidget"/>
+    <view height="155" x="-560.25" y="-726.25"/>
+    <pos x="-510" y="-610"/>
+  </operation>
+  <operation bgcolor="4284395451" dataname="Data" dataplugin="www.csiro.au/workspace/dataanalysis" datatype="CSIRO::DataAnalysis::DataSeries" id="{c7968e7b-638e-41b2-9dc7-8b6185ab3ac0}" label="Insert column into SQL database table" plugin="www.csiro.au/workspace/dataanalysis" type="InsertColumnIntoSqlTable">
+    <input name="Dependencies" size="0"/>
+    <input name="Column name">cumulativeAverage</input>
+    <input name="Count must match">0</input>
+    <input name="Overwrite existing">0</input>
+    <view height="155" x="-780.25" y="-726.25"/>
+    <pos x="-730" y="-610"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{e57b6a05-8d3e-41e3-9b0f-1c652474b1fa}" label="Create chart object dictionary" plugin="www.csiro.au/workspace/dataanalysis" type="CreateChartObjectDictionary">
+    <input name="Dependencies" size="0"/>
+    <input name="Key"/>
+    <input name="ClassName"/>
+    <view height="155" x="-910.25" y="-256.25"/>
+    <pos x="-860" y="-140"/>
+    <custominput datatype="QString" isscalar="true" name="Key"/>
+    <custominput datatype="CSIRO::DataAnalysis::DataSeries" isscalar="true" name="XValues"/>
+    <custominput datatype="CSIRO::DataAnalysis::DataSeries" isscalar="true" name="YValues"/>
+    <custominput datatype="QString" isscalar="true" name="ClassName"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{e5e65a6c-20b1-4fb8-bb6a-53d68efc616e}" label="Write SQL Result Set To CSV File" plugin="www.csiro.au/workspace/dataanalysis" type="WriteSqlResultSetToCsvFile">
+    <input name="Dependencies" size="0"/>
+    <input name="File name">ws:../../../../../Program Files/csiro.au/workspace/doc/Workspace/Examples/newplotsample1.csv</input>
+    <input name="Delimiter">,</input>
+    <input name="Write column names">1</input>
+    <view height="155" x="-350.25" y="-726.25"/>
+    <pos x="-300" y="-610"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{fe90f1da-1b04-4759-8ab9-c9068843b8e2}" label="Image writer" plugin="www.csiro.au/workspace/dataanalysis" type="ImageWriter">
+    <input name="Dependencies" size="0"/>
+    <input globalname="FileName" name="File name" preferredwidget="Custom .ui file">ws:outputimage.png</input>
+    <input name="Text"/>
+    <input globalname="Image" name="Image" nodata="true" preferredwidget="CSIRO::DataAnalysis::ImageWidget"/>
+    <view height="155" x="-260.25" y="-256.25"/>
+    <pos x="-210" y="-140"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{ff058393-bddc-4779-911b-2f6b60dea146}" label="Create SqlTable from CSV File" plugin="www.csiro.au/workspace/dataanalysis" type="CreateSqlTableFromCsvFile">
+    <input name="Dependencies" size="0"/>
+    <input name="File name">ws:../../../../../Program Files/csiro.au/workspace/doc/Workspace/Examples/plotsample.csv</input>
+    <input name="Delimiter">,</input>
+    <input name="Column headers">1</input>
+    <input name="Determine datatypes">0</input>
+    <input name="Skip top # lines">0</input>
+    <input name="Table name">plotsample</input>
+    <input name="Database" nodata="true"/>
+    <input name="Log info">0</input>
+    <view height="198" x="-1730.25" y="-747.75"/>
+    <pos x="-1680" y="-610"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Image writer dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{ec340b6d-cd4c-4c23-bf43-8d6c9eaf38fa}" label="Image writer dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-42.75" y="-224.05"/>
+    <pos x="-20" y="-140"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Write SQL Result Set To CSV File dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{25f479a6-ed7d-4e56-b0d0-f88e5826a724}" label="Write SQL Result Set To CSV File dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-152.75" y="-694.05"/>
+    <pos x="-130" y="-610"/>
+  </operation>
+  <connection copy="false" dest_name="Data" from_op="{04a33f4e-d3d5-4486-b35e-93ffe5f26831}" src_name="Data series" to_op="{c7968e7b-638e-41b2-9dc7-8b6185ab3ac0}"/>
+  <connection copy="false" dest_name="YValues" from_op="{04a33f4e-d3d5-4486-b35e-93ffe5f26831}" src_name="Data series" to_op="{e57b6a05-8d3e-41e3-9b0f-1c652474b1fa}"/>
+  <connection copy="false" dest_name="Data series" from_op="{1da9d239-f5ec-41ed-8ae9-cc09e4d24859}" src_name="Column" to_op="{04a33f4e-d3d5-4486-b35e-93ffe5f26831}"/>
+  <connection copy="false" dest_name="XValues" from_op="{3d8ca524-3a93-4cac-966f-3734d784e452}" src_name="Column" to_op="{e57b6a05-8d3e-41e3-9b0f-1c652474b1fa}"/>
+  <connection copy="false" dest_name="Result set" from_op="{400e0d57-1b94-4131-8faa-a59299fba45c}" src_name="Result" to_op="{1da9d239-f5ec-41ed-8ae9-cc09e4d24859}"/>
+  <connection copy="false" dest_name="Result set" from_op="{400e0d57-1b94-4131-8faa-a59299fba45c}" src_name="Result" to_op="{3d8ca524-3a93-4cac-966f-3734d784e452}"/>
+  <connection copy="false" dest_name="Mapper" from_op="{57362087-59e8-44c5-b057-a10e74b64e35}" src_name="DataSeries mapper" to_op="{04a33f4e-d3d5-4486-b35e-93ffe5f26831}"/>
+  <connection copy="false" dest_name="Chart" from_op="{664ef71a-3776-46f8-b769-5d730c520011}" src_name="Chart" to_op="{95d7f695-5bd1-4e0b-97d5-815e1cb3e9d0}"/>
+  <connection copy="false" dest_name="Image" from_op="{95d7f695-5bd1-4e0b-97d5-815e1cb3e9d0}" src_name="Image" to_op="{fe90f1da-1b04-4759-8ab9-c9068843b8e2}"/>
+  <connection copy="false" dest_name="SQL ResultSet" from_op="{b2e3db8f-b391-4da8-be6d-7b497a20cc47}" src_name="Result" to_op="{e5e65a6c-20b1-4fb8-bb6a-53d68efc616e}"/>
+  <connection copy="false" dest_name="Database" from_op="{c7968e7b-638e-41b2-9dc7-8b6185ab3ac0}" src_name="Database" to_op="{b2e3db8f-b391-4da8-be6d-7b497a20cc47}"/>
+  <connection copy="false" dest_index="0" dest_name="LineItems" from_op="{e57b6a05-8d3e-41e3-9b0f-1c652474b1fa}" src_name="Chart data" to_op="{664ef71a-3776-46f8-b769-5d730c520011}"/>
+  <connection copy="false" dest_name="Write SQL Result Set To CSV File dependency" from_op="{e5e65a6c-20b1-4fb8-bb6a-53d68efc616e}" src_name="Dependencies" to_op="{25f479a6-ed7d-4e56-b0d0-f88e5826a724}"/>
+  <connection copy="false" dest_name="Image writer dependency" from_op="{fe90f1da-1b04-4759-8ab9-c9068843b8e2}" src_name="Dependencies" to_op="{ec340b6d-cd4c-4c23-bf43-8d6c9eaf38fa}"/>
+  <connection copy="false" dest_name="Database" from_op="{ff058393-bddc-4779-911b-2f6b60dea146}" src_name="Database" to_op="{400e0d57-1b94-4131-8faa-a59299fba45c}"/>
+  <connection copy="false" dest_name="Database" from_op="{ff058393-bddc-4779-911b-2f6b60dea146}" src_name="Database" to_op="{c7968e7b-638e-41b2-9dc7-8b6185ab3ac0}"/>
+  <connection copy="false" dest_name="Table name" from_op="{ff058393-bddc-4779-911b-2f6b60dea146}" src_name="Table name" to_op="{c7968e7b-638e-41b2-9dc7-8b6185ab3ac0}"/>
+</operation>

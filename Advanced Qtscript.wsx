@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" id="{c7f072ea-fb0a-4a48-a6d0-7b2a5306cb1b}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T11:30:33</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation bgcolor="4284395451" id="{8ba737aa-1fb3-4912-aee8-7b09a9abbabd}" label="Log Text" plugin="www.csiro.au/workspace/builtin" type="LogText">
+    <input name="Dependencies" size="1"/>
+    <input name="Strings" size="0"/>
+    <input name="Category"/>
+    <view height="155" x="49.75" y="-176.25"/>
+    <pos x="100" y="-60"/>
+  </operation>
+  <operation bgcolor="4284395451" id="{c7f84d29-9435-4346-a83f-b5560f8b00ea}" label="Run QtScript" namedinputs="name" namedoutputs="result" plugin="www.csiro.au/workspace/builtin" type="RunQtScript">
+    <input name="Dependencies" size="0"/>
+    <input name="Script">function familynameFirst(x) 
+{
+  var re = /(\w+)\s(\w+)/;
+  var y = x.replace(re, &quot;$2, $1&quot;);
+  return y;
+}
+
+print(Date().toString() + &quot;\n&quot;);
+
+var output = &quot;Converted: \&quot;&quot;;
+output += name;
+output += &quot;\&quot; to \&quot;&quot;
+result = familynameFirst(name);
+result = result.toUpperCase();
+output += result;
+output += &quot;\&quot;\n&quot;;
+print(output);</input>
+    <input name="Parameters" size="0"/>
+    <input name="name">Eric Le</input>
+    <view height="155" x="-370.25" y="-176"/>
+    <pos x="-320" y="-59.75"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Log Text dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{7ff50603-78dc-4bd7-bb9d-78e52f8a7d8e}" label="Log Text dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="287.25" y="-174.05"/>
+    <pos x="310" y="-90"/>
+  </operation>
+  <connection copy="false" dest_name="Log Text dependency" from_op="{8ba737aa-1fb3-4912-aee8-7b09a9abbabd}" src_name="Dependencies" to_op="{7ff50603-78dc-4bd7-bb9d-78e52f8a7d8e}"/>
+  <connection copy="false" dest_name="Text to Log" from_op="{c7f84d29-9435-4346-a83f-b5560f8b00ea}" src_name="result" to_op="{8ba737aa-1fb3-4912-aee8-7b09a9abbabd}"/>
+</operation>

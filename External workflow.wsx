@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation atomic="false" bgcolor="4280839393" catname="LogWithTimestamp" catpath="MyToolBox/Log" id="{5a9aec99-d24e-4dc2-b8d1-d6b26a3b9e1b}" label="Root" plugin="www.csiro.au/workspace/builtin" type="Workspace">
+  <environment>
+    <platform>windows 64bit</platform>
+    <lastModified>2021-11-09T16:08:00</lastModified>
+    <plugin name="www.csiro.au/workspace/builtin" uri="www.csiro.au/workspace/packages/6.13.0/Windows/x86_64"/>
+  </environment>
+  <input name="Dependencies" size="0"/>
+  <operation atomic="false" bgcolor="4280839393" id="{3dd31dee-67f2-4d4b-88a7-f56ddffd0cff}" label="Log with timestamp" plugin="www.csiro.au/workspace/builtin" source="ws:externalworkflowexample.wsx" type="Workspace">
+    <input name="Dependencies" size="0"/>
+    <pos x="-509.9999999999999" y="140"/>
+    <view height="155" x="-570.3" y="16"/>
+  </operation>
+  <operation bgcolor="4291611648" dataname="my special value" dataplugin="www.csiro.au/workspace/builtin" datatype="QString" id="{6ade3be1-a8e5-44a3-8529-406ee9e6ad83}" label="my special value" plugin="www.csiro.au/workspace/builtin" type="Variable">
+    <input name="Dependencies" size="0"/>
+    <input name="my special value">42</input>
+    <view height="91" x="-732.75" y="-144.05"/>
+    <pos x="-710" y="-60"/>
+  </operation>
+  <operation bgcolor="4291611648" dataname="my special value" dataplugin="www.csiro.au/workspace/builtin" datatype="QString" id="{9b638bb7-13fc-40cd-a3b7-c84f9e6340ba}" label="my special value" plugin="www.csiro.au/workspace/builtin" type="Variable">
+    <input name="Dependencies" size="0"/>
+    <input name="my special value">Cloned 42</input>
+    <view height="91" x="-732.75" y="25.95"/>
+    <pos x="-710" y="110"/>
+  </operation>
+  <operation atomic="false" bgcolor="4280839393" id="{a075e432-0ca6-4127-85c3-efd711e01f90}" label="Log with timestamp" plugin="www.csiro.au/workspace/builtin" source="ws:externalworkflowexample.wsx" type="Workspace">
+    <input name="Dependencies" size="0"/>
+    <pos x="-499.9999999999999" y="-60"/>
+    <view height="155" x="-560.3" y="-184"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Log Text dependency" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{50f96449-aa70-4a3b-b6c2-456814540c11}" label="Log Text dependency" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-292.75" y="-144.05"/>
+    <pos x="-270" y="-60"/>
+  </operation>
+  <operation bgcolor="4294931456" dataname="Log Text dependency (1)" dataplugin="www.csiro.au/workspace/builtin" datatype="CSIRO::DataExecution::Dependency" id="{10cedcfc-ba95-4261-9d3b-ca5fecd6a7f6}" label="Log Text dependency (1)" plugin="www.csiro.au/workspace/builtin" type="WorkspaceOutput">
+    <input name="Dependencies" size="0"/>
+    <view height="91" x="-292.75" y="25.95"/>
+    <pos x="-270" y="110"/>
+  </operation>
+  <connection copy="false" dest_name="Log Text dependency (1)" from_op="{3dd31dee-67f2-4d4b-88a7-f56ddffd0cff}" src_name="Log Text dependency" to_op="{10cedcfc-ba95-4261-9d3b-ca5fecd6a7f6}"/>
+  <connection copy="false" dest_name="Input" from_op="{6ade3be1-a8e5-44a3-8529-406ee9e6ad83}" src_name="my special value" to_op="{a075e432-0ca6-4127-85c3-efd711e01f90}"/>
+  <connection copy="false" dest_name="Input" from_op="{9b638bb7-13fc-40cd-a3b7-c84f9e6340ba}" src_name="my special value" to_op="{3dd31dee-67f2-4d4b-88a7-f56ddffd0cff}"/>
+  <connection copy="false" dest_name="Log Text dependency" from_op="{a075e432-0ca6-4127-85c3-efd711e01f90}" src_name="Log Text dependency" to_op="{50f96449-aa70-4a3b-b6c2-456814540c11}"/>
+</operation>
